@@ -1,3 +1,4 @@
+import 'package:booknstyle/core/network/network_info.dart';
 import 'package:booknstyle/data/models/user_profile/user_profile_model.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/exceptions.dart';
@@ -9,7 +10,7 @@ import 'package:booknstyle/data/data_sources/remote/user_profile_remote_data_sou
 class UserProfileRepositoryImpl implements UserProfileRepository {
   final UserProfileRemoteDataSource remoteDataSource;
 
-  UserProfileRepositoryImpl({required this.remoteDataSource});
+  UserProfileRepositoryImpl({required this.remoteDataSource, required NetworkInfo networkInfo});
 
   @override
   Future<Either<Failure, UserProfile>> getUserProfile() async {

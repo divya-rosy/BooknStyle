@@ -4,8 +4,6 @@ import 'package:booknstyle/domain/entities/user_info/user_profile.dart';
 import 'package:booknstyle/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'package:booknstyle/presentation/blocs/user_profile/user_profile_state.dart';
 import 'package:booknstyle/presentation/blocs/user_profile/user_profile_event.dart';
-import 'package:booknstyle/domain/usecases/user_info/get_user_profile.dart';
-import 'package:booknstyle/domain/usecases/user_info/save_user_profile.dart' as usecase;
 import 'package:booknstyle/core/router/app_router.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -22,6 +20,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     _dateController = TextEditingController();
+    context.read<UserProfileBloc>().add(FetchUserProfile());
   }
 
   @override
@@ -34,23 +33,17 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('User Profile')),
-      body: BlocProvider(
-        create: (context) => UserProfileBloc(
-          getUserProfile: context.read<GetUserProfileUseCase>(),
-          saveUserProfile: context.read<usecase.SaveUserProfileUseCase>(),
-        )..add(FetchUserProfile()),
-        child: BlocBuilder<UserProfileBloc, UserProfileState>(
-          builder: (context, state) {
-            if (state is UserProfileLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is UserProfileLoaded) {
-              return _buildProfile(context, state.userProfile);
-            } else if (state is UserProfileError) {
-              return Center(child: Text('Error: ${state.message}'));
-            }
-            return const Center(child: Text('Please wait...'));
-          },
-        ),
+      body: BlocBuilder<UserProfileBloc, UserProfileState>(
+        builder: (context, state) {
+          if (state is UserProfileLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is UserProfileLoaded) {
+            return _buildProfile(context, state.userProfile);
+          } else if (state is UserProfileError) {
+            return Center(child: Text('Error: ${state.message}'));
+          }
+          return const Center(child: Text('Please wait...'));
+        },
       ),
     );
   }

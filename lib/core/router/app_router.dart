@@ -19,6 +19,7 @@ class AppRouter {
   static const String about = '/about';
   static const String filter = '/filter';
   static const String addressForm = '/addressForm';
+  static const String profileForm = '/profileForm';
 
 
   static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
